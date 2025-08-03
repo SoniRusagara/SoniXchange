@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * HomeController
- *
  * This controller provides a simple landing endpoint for
  * the SoniXChange platform. Serves as the entry point
  * to verify that the application is running successfully.
@@ -17,7 +16,7 @@ public class HomeController {
   /**
    * Returns a welcome message for the SoniXChange platform.
    *
-   * @return String - a user‑friendly welcome message.
+   * @return String - user‑friendly welcome message.
    */
   @GetMapping
   public String home(){

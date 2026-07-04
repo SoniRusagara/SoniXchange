@@ -1,6 +1,8 @@
 package com.soniXchange.model;
 
 import com.soniXchange.domain.VerificationType;
+
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 /**
@@ -16,11 +18,12 @@ public class TwoFactorAuth {
    * Indicates whether 2FA is enabled for the user.
    * Defaults to false.
    */
-  private boolean isEnabled = false;
+  private boolean enabled = false;
 
   /**
    * The medium through which 2FA verification codes are sent
    * (e.g., MOBILE or EMAIL).
    */
+  @Enumerated(EnumType.STRING)
   private VerificationType sendTo;
 }

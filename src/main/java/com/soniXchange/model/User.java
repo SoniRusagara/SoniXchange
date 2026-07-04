@@ -3,11 +3,6 @@ package com.soniXchange.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soniXchange.domain.USER_ROLE;
 import jakarta.persistence.*;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
 
 /**
@@ -19,7 +14,7 @@ import lombok.Data;
  * getters, setters, equals, hashCode, and toString methods.
  */
 @Entity
-//@Data
+@Data
 @Table(name = "users")
 public class User {
   /**
@@ -45,8 +40,11 @@ public class User {
   private String email;
 
   //private String roles;
-  private boolean isEnabled;
   private String sendTo;
+  
+  @Column(name = "is_enabled")
+  private boolean isEnabled;
+  
   /**
    * Password for account authentication.
    * Marked with @JsonProperty(access = WRITE_ONLY) to ensure the password
@@ -60,7 +58,7 @@ public class User {
   // 2-Factor Authentication
   @Embedded
   private TwoFactorAuth twoFactorAuth = new TwoFactorAuth();
-
+// TODO: fix intellj not recognizing Lombok
   /**
    * Role assigned to the user.
    *
@@ -68,53 +66,52 @@ public class User {
    * standard customer privileges unless explicitly set otherwise.
    */
   private USER_ROLE roles = USER_ROLE.ROLE_CUSTOMER;
+  
+  public long getId() {
+   return id;
+ }
 
-//  // TODO: fix intellj not recognizing Lombok
-//  public long getId() {
-//    return id;
-//  }
-//
-//  public void setId(long id) {
-//    this.id = id;
-//  }
-//
-//  public String getFullName() {
-//    return fullName;
-//  }
-//
-//  public void setFullName(String fullName) {
-//    this.fullName = fullName;
-//  }
-//
-//  public String getPassword() {
-//    return password;
-//  }
-//
-//  public void setPassword(String password) {
-//    this.password = password;
-//  }
-//
-//  public String getEmail() {
-//    return email;
-//  }
-//
-//  public void setEmail(String email) {
-//    this.email = email;
-//  }
-//
-//  public TwoFactorAuth getTwoFactorAuth() {
-//    return twoFactorAuth;
-//  }
-//
-//  public void setTwoFactorAuth(TwoFactorAuth twoFactorAuth) {
-//    this.twoFactorAuth = twoFactorAuth;
-//  }
-//
-//  public USER_ROLE getRoles() {
-//    return roles;
-//  }
-//
-//  public void setRoles(USER_ROLE roles) {
-//    this.roles = roles;
-//  }
+  public void setId(long id) {
+   this.id = id;
+ }
+
+  public String getFullName() {
+   return fullName;
+ }
+
+  public void setFullName(String fullName) {
+   this.fullName = fullName;
+ }
+
+  public String getPassword() {
+   return password;
+ }
+
+  public void setPassword(String password) {
+   this.password = password;
+ }
+
+  public String getEmail() {
+   return email;
+ }
+
+  public void setEmail(String email) {
+   this.email = email;
+ }
+
+  public TwoFactorAuth getTwoFactorAuth() {
+   return twoFactorAuth;
+ }
+
+  public void setTwoFactorAuth(TwoFactorAuth twoFactorAuth) {
+   this.twoFactorAuth = twoFactorAuth;
+ }
+
+  public USER_ROLE getRoles() {
+   return roles;
+ }
+
+  public void setRoles(USER_ROLE roles) {
+   this.roles = roles;
+ }
 }

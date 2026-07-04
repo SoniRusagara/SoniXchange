@@ -39,7 +39,6 @@ public class AuthController {
   @PostMapping("/signup")
   public ResponseEntity<User> register(@RequestBody User user){
 
-    // debug the following:
     User newUser = new User();
     newUser.setEmail(user.getEmail());
     newUser.setPassword(user.getPassword());

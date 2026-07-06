@@ -15,7 +15,7 @@ import lombok.Data;
  */
 @Entity
 @Data
-@Table(name = "users")
+// @Table(name = "users")
 public class User {
   /**
    * Unique identifier for each user.
@@ -29,21 +29,16 @@ public class User {
   /**
    * Full name of the user.
    */
-  @Column(nullable = false)
+  // @Column(nullable = false)
   private String fullName;
   /**
    * Email address of the user.
    * Serves as a primary contact and
    * can be used for authentication.
    */
-  @Column(nullable = false, unique = true)
+  // @Column(nullable = false, unique = true)
   private String email;
 
-  //private String roles;
-  private String sendTo;
-  
-  @Column(name = "is_enabled")
-  private boolean isEnabled;
   
   /**
    * Password for account authentication.
@@ -51,8 +46,8 @@ public class User {
    * can be written during input (e.g., registration) but is never exposed
    * in API responses for security reasons.
    */
-  //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @Column(nullable = false)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  // @Column(nullable = false)
   private String password;
 
   // 2-Factor Authentication
@@ -67,51 +62,51 @@ public class User {
    */
   private USER_ROLE roles = USER_ROLE.ROLE_CUSTOMER;
   
-  public long getId() {
-   return id;
- }
+//   public long getId() {
+//    return id;
+//  }
 
-  public void setId(long id) {
-   this.id = id;
- }
+//   public void setId(long id) {
+//    this.id = id;
+//  }
 
-  public String getFullName() {
-   return fullName;
- }
+//   public String getFullName() {
+//    return fullName;
+//  }
 
-  public void setFullName(String fullName) {
-   this.fullName = fullName;
- }
+//   public void setFullName(String fullName) {
+//    this.fullName = fullName;
+//  }
 
-  public String getPassword() {
-   return password;
- }
+//   public String getPassword() {
+//    return password;
+//  }
 
-  public void setPassword(String password) {
-   this.password = password;
- }
+//   public void setPassword(String password) {
+//    this.password = password;
+//  }
 
-  public String getEmail() {
-   return email;
- }
+//   public String getEmail() {
+//    return email;
+//  }
 
-  public void setEmail(String email) {
-   this.email = email;
- }
+//   public void setEmail(String email) {
+//    this.email = email;
+//  }
 
-  public TwoFactorAuth getTwoFactorAuth() {
-   return twoFactorAuth;
- }
+//   public TwoFactorAuth getTwoFactorAuth() {
+//    return twoFactorAuth;
+//  }
 
-  public void setTwoFactorAuth(TwoFactorAuth twoFactorAuth) {
-   this.twoFactorAuth = twoFactorAuth;
- }
+//   public void setTwoFactorAuth(TwoFactorAuth twoFactorAuth) {
+//    this.twoFactorAuth = twoFactorAuth;
+//  }
 
-  public USER_ROLE getRoles() {
-   return roles;
- }
+//   public USER_ROLE getRoles() {
+//    return roles;
+//  }
 
-  public void setRoles(USER_ROLE roles) {
-   this.roles = roles;
- }
+//   public void setRoles(USER_ROLE roles) {
+//    this.roles = roles;
+//  }
 }

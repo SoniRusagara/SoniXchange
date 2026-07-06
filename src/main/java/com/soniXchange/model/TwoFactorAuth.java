@@ -13,17 +13,18 @@ import lombok.Data;
  * the verification method (e.g., MOBILE or EMAIL).
  */
 @Data
+@Embeddable
 public class TwoFactorAuth {
   /**
    * Indicates whether 2FA is enabled for the user.
    * Defaults to false.
    */
-  private boolean enabled = false;
+  private boolean isEnabled = false;
 
   /**
    * The medium through which 2FA verification codes are sent
    * (e.g., MOBILE or EMAIL).
    */
-  @Enumerated(EnumType.STRING)
+  // @Enumerated(EnumType.STRING)
   private VerificationType sendTo;
 }

@@ -24,7 +24,7 @@ public class User {
    */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY) // note: changed from .AUTO to .IDENTITY
-  private long id;
+  private long id;                                    // TODO: Verify that is ok^^^
 
   /**
    * Full name of the user.

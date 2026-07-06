@@ -2,8 +2,7 @@ package com.soniXchange.model;
 
 import com.soniXchange.domain.VerificationType;
 
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**

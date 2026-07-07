@@ -22,4 +22,14 @@ public class HomeController {
   public String home(){
     return "Welcome to SoniXChange Platform";
   }
+
+  /**
+   * Returns a welcome message for the SoniXChange platform.
+   *
+   * @return String - user‑friendly welcome message.
+   */
+  @GetMapping("/api")
+  public String secure(){
+    return "Welcome to SoniXChange Platform: Secure";
+  }
 }

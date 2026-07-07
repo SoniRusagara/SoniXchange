@@ -24,9 +24,7 @@ public class HomeController {
   }
 
   /**
-   * Returns a welcome message for the SoniXChange platform.
-   *
-   * @return String - user‑friendly welcome message.
+   * Secure Version of HomePage
    */
   @GetMapping("/api")
   public String secure(){

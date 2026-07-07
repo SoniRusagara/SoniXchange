@@ -42,7 +42,6 @@ public class JwtTokenValidator extends OncePerRequestFilter{
                     email, 
                     null, // TODO: Verify if this should be null instead (as its a typo)
                     authoritiesList 
-
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(auth);

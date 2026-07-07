@@ -12,10 +12,16 @@ public interface AppConfig {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/**").authenticated()
-                .anyRequest().permitAll()
-            )
+                .anyRequest().permitAll())
+            .addFilterBefore(new JwtTokenValidator(), BasicAutheticationFilter.class)
+            .csrf(csrf->csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
 
+        return null;
+    }
+
+    private CorsConfigurationSource corsConfigurationSource() {
         return null;
     }
     

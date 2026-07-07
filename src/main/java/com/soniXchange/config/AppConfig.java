@@ -14,17 +14,4 @@ public class AppConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll())
-            .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
-            .csrf(csrf->csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()));
-
-
-        return http.build();
-    }
-
-    // Configure CORS to restrict API access to specific development domains
-    private CorsConfigurationSource corsConfigurationSource() {
-        return null;
-    }
-    
-}
+       

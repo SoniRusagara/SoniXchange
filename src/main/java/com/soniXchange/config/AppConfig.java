@@ -21,6 +21,7 @@ public interface AppConfig {
         return null;
     }
 
+    // Configure CORS to restrict API access to specific development domains
     private CorsConfigurationSource corsConfigurationSource() {
         return null;
     }

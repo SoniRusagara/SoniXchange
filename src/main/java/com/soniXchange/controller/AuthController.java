@@ -3,6 +3,8 @@ package com.soniXchange.controller;
 import com.soniXchange.config.JwtProvider;
 import com.soniXchange.model.User;
 import com.soniXchange.repository.UserRepository;
+import com.soniXchange.response.AuthResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -68,7 +70,12 @@ public class AuthController {
 
     String jwt = JwtProvider.generateToken(auth);
 
-    return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    AuthResponse res = new AuthResponse();
+    res.setJwt(jwt);
+    res.setStatus(true);
+    res.setMessage("register success");
+
+    return new ResponseEntity<>(res, HttpStatus.CREATED);
 
   }
 }

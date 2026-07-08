@@ -78,4 +78,42 @@ public class AuthController {
     return new ResponseEntity<>(res, HttpStatus.CREATED);
 
   }
+
+
+    /**
+   * Registers a new user in the system.
+   *
+   * @param user User object containing email and password details.
+   * @return ResponseEntity with the created User and HTTP
+   * status code 201 (Created).
+      * @throws Exception 
+      */
+    @PostMapping("/signin")
+    public ResponseEntity<AuthResponse> login(@RequestBody User user) throws Exception{
+     User isEmailExist = userRepository.findByEmail(user.getEmail());
+ 
+     if(isEmailExist != null){
+       throw new Exception("Email is already used with another account");
+     }
+ 
+     String userName = user.getEmail();
+     String password = user.getPassword();
+     Authentication auth = authenticate(userName, password);
+ 
+     SecurityContextHolder.getContext().setAuthentication(auth);
+ 
+     String jwt = JwtProvider.generateToken(auth);
+ 
+     AuthResponse res = new AuthResponse();
+     res.setJwt(jwt);
+     res.setStatus(true);
+     res.setMessage("register success");
+ 
+     return new ResponseEntity<>(res, HttpStatus.CREATED);
+ 
+   }
+
+   private Authentication authenticate(String userName, String password) {
+ 
+  }
 }

@@ -128,6 +128,8 @@ public class AuthController {
 
       TwoFactorOTP neTwoFactorOTP = twoFactorOTPService.createTwoFactorOTP(authUser, otp, jwt);
 
+      // Send email to user with OTP 
+      
       res.setSession(neTwoFactorOTP.getId());
       return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
 

@@ -1,14 +1,18 @@
 package com.soniXchange.controller;
 
 import com.soniXchange.config.JwtProvider;
+import com.soniXchange.model.TwoFactorOTP;
 import com.soniXchange.model.User;
 import com.soniXchange.repository.UserRepository;
 import com.soniXchange.response.AuthResponse;
 import com.soniXchange.service.CustomeUserDetailsService;
+import com.soniXchange.service.TwoFactorOTPService;
+import com.soniXchange.utils.OTPUtils;
 
 import java.net.PasswordAuthentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +46,9 @@ public class AuthController {
 
   @Autowired
   private CustomeUserDetailsService customeUserDetailsService;
+
+  @Autowired
+  private TwoFactorOTPService twoFactorOTPService;
 
   /**
    * Registers a new user in the system.
@@ -105,6 +112,26 @@ public class AuthController {
  
      SecurityContextHolder.getContext().setAuthentication(auth);
      String jwt = JwtProvider.generateToken(auth);
+
+     User authUser = userRepository.findByEmail(userName);
+
+     if(user.getTwoFactorAuth().isEnabled()){
+      AuthResponse res = new AuthResponse();
+      res.setMessage("Two factor auth is enabled");
+      res.setTwoFactorAuthEnabled(true);
+      String otp = OTPUtils.generateOTP();
+
+      TwoFactorOTP oldTwoFactorOTP = twoFactorOTPService.findByUser(authUser.getId());
+      if(oldTwoFactorOTP != null){
+        twoFactorOTPService.deleteTwoFactorOtp(oldTwoFactorOTP);
+      }
+
+      TwoFactorOTP neTwoFactorOTP = twoFactorOTPService.createTwoFactorOTP(authUser, otp, jwt);
+
+      res.setSession(neTwoFactorOTP.getId());
+      return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+
+     }
  
      AuthResponse res = new AuthResponse();
      res.setJwt(jwt);

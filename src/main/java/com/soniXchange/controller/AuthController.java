@@ -81,7 +81,7 @@ public class AuthController {
     AuthResponse res = new AuthResponse();
     res.setJwt(jwt);
     res.setStatus(true);
-    res.setMessage("register success");
+    res.setMessage("Register success");
 
     return new ResponseEntity<>(res, HttpStatus.CREATED);
 
@@ -109,7 +109,7 @@ public class AuthController {
      AuthResponse res = new AuthResponse();
      res.setJwt(jwt);
      res.setStatus(true);
-     res.setMessage("register success");
+     res.setMessage("Login success");
  
      return new ResponseEntity<>(res, HttpStatus.CREATED);
  
@@ -122,7 +122,7 @@ public class AuthController {
       throw new BadCredentialsException("invalid username");
     }
 
-    if(password.equals(userDetails.getPassword())){
+    if(!password.equals(userDetails.getPassword())){
       throw new BadCredentialsException("invalid password");
     }
 

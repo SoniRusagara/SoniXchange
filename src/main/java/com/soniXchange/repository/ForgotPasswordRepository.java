@@ -4,9 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.soniXchange.model.ForgotPasswordToken;
 
-public interface ForgotPasswordRepository extends JpaRepository<ForgotPasswordToken, Long> {
+public interface ForgotPasswordRepository extends JpaRepository<ForgotPasswordToken, String> {
 
     ForgotPasswordToken findByUserId(Long userId);
 
-    
 } 

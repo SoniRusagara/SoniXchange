@@ -6,6 +6,7 @@ import com.soniXchange.model.User;
 import com.soniXchange.repository.UserRepository;
 import com.soniXchange.response.AuthResponse;
 import com.soniXchange.service.CustomeUserDetailsService;
+import com.soniXchange.service.EmailService;
 import com.soniXchange.service.TwoFactorOTPService;
 import com.soniXchange.utils.OTPUtils;
 
@@ -21,9 +22,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -49,6 +52,9 @@ public class AuthController {
 
   @Autowired
   private TwoFactorOTPService twoFactorOTPService;
+
+  @Autowired
+  private EmailService emailService;
 
   /**
    * Registers a new user in the system.
@@ -128,7 +134,8 @@ public class AuthController {
 
       TwoFactorOTP neTwoFactorOTP = twoFactorOTPService.createTwoFactorOTP(authUser, otp, jwt);
 
-      // Send email to user with OTP 
+      // Send OTP email to users that have TwoFactorAuthentication enabled 
+      emailService.sendVerificationOtpEmail(userName, otp);
       
       res.setSession(neTwoFactorOTP.getId());
       return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
@@ -156,7 +163,23 @@ public class AuthController {
     }
 
     return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-
- 
   }
+
+  public ResponseEntity<AuthResponse> verifySigninOTP(
+    @PathVariable String otp, 
+    @RequestParam String id) throws Exception {
+   
+      TwoFactorOTP twoFactorOTP = twoFactorOTPService.findById(id);
+
+      if(twoFactorOTPService.verifyTwoFactorOtp(twoFactorOTP, otp)){
+        AuthResponse res = new AuthResponse();
+        res.setMessage("Two factor authentication verified");
+        res.setTwoFactorAuthEnabled(true);
+        res.setJwt(twoFactorOTP.getJwt());
+        return new ResponseEntity<>(res, HttpStatus.OK);
+      }
+      throw new Exception("Invalid OTP");
+  }
+
+
 }

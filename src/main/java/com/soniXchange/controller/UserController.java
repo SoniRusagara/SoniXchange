@@ -1,5 +1,7 @@
 package com.soniXchange.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,15 +9,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soniXchange.domain.VerificationType;
+import com.soniXchange.model.ForgotPasswordToken;
 import com.soniXchange.model.User;
 import com.soniXchange.model.VerificationCode;
+import com.soniXchange.request.ForgotPasswordTokenRequest;
+import com.soniXchange.request.ResetPasswordRequest;
+import com.soniXchange.response.ApiResponse;
+import com.soniXchange.response.AuthResponse;
 import com.soniXchange.service.EmailService;
+import com.soniXchange.service.ForgotPasswordService;
 import com.soniXchange.service.UserService;
 import com.soniXchange.service.VerificationCodeService;
+import com.soniXchange.utils.OTPUtils;
 
 @RestController
 public class UserController {
@@ -28,6 +39,9 @@ public class UserController {
 
     @Autowired
     private VerificationCodeService verificationCodeService;
+
+    @Autowired
+    private ForgotPasswordService forgotPasswordService;
 
     @GetMapping("/api/users/profile")
     public ResponseEntity<User> getUserProfile(@RequestHeader("Authorization") String jwt) throws Exception{
@@ -57,7 +71,7 @@ public class UserController {
         return new ResponseEntity<String>("Verification OTP sent successfully", HttpStatus.OK);
     }
 
-    @PatchMapping("/api/users/enable-two-factor/verify-otp.{otp}")
+    @PatchMapping("/api/users/enable-two-factor/verify-otp/{otp}")
     public ResponseEntity<User> enableTwoFactorAuthentication(
         @PathVariable String otp,
         @RequestHeader("Authorization") String jwt) throws Exception{
@@ -78,6 +92,58 @@ public class UserController {
         }
 
         throw new Exception("Wrong OTP");
+    }
+
+    @PostMapping("/auth/users/reset-password/send-otp")
+    public ResponseEntity<AuthResponse> sendForgotPasswordOTP(
+        
+        @RequestBody ForgotPasswordTokenRequest req) throws Exception{
+            User user = userService.findUserByEmail(req.getSendTo());
+            String otp = OTPUtils.generateOTP();
+            UUID uuid = UUID.randomUUID();
+            String id = uuid.toString();
+
+            ForgotPasswordToken token = forgotPasswordService.findByUser(user.getId());
+
+            if(token == null){
+                token = forgotPasswordService.createToken(user, id, otp, req.getVerificationType(), req.getSendTo());
+            }
+
+            if(req.getVerificationType().equals(VerificationType.EMAIL)){
+                emailService.sendVerificationOtpEmail(
+                    user.getEmail(), 
+                    token.getOtp());
+            }
+
+            AuthResponse response = new AuthResponse();
+            response.setSession(token.getId());
+            response.setMessage("Password reset OTPP sent successfully");
+
+
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/auth/users/reset-password/verify-otp")
+    public ResponseEntity<ApiResponse> resetPassword(
+        @RequestParam String id,
+        @RequestBody ResetPasswordRequest req,
+        @RequestHeader("Authorization") String jwt) throws Exception{
+
+
+        ForgotPasswordToken forgotPasswordToken = forgotPasswordService.findById(id);
+
+        boolean isVerified = forgotPasswordToken.getOtp().equals(req.getOtp());
+
+        if(isVerified){
+            userService.updatePassword(forgotPasswordToken.getUser(), req.getPassword());
+            ApiResponse res = new ApiResponse();
+            res.setMessage("Password updated successfully");
+            return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+        }
+        throw new Exception("Wrong OTP");
+
+  
     }
     
 }

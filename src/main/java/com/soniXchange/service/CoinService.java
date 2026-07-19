@@ -15,7 +15,4 @@ public interface CoinService {
 
     String searchCoin(String keyword) throws Exception;
 
-    String getTop50CoinsByMarketCapRank() throws Exception;
-
-    String getTradingCoins() throws Exception;
-}
+    Stri

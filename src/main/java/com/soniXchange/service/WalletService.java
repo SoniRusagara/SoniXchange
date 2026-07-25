@@ -1,0 +1,14 @@
+package com.soniXchange.service;
+
+import com.soniXchange.model.Order;
+import com.soniXchange.model.User;
+import com.soniXchange.model.Wallet;
+
+public interface WalletService {
+
+    Wallet getUserWallet (User user);
+    Wallet addBalance(Wallet wallet, Long money);
+    Wallet findWalletById(Long id);
+    Wallet walletToWalletTransfer(User sender, Wallet receiverWallet, Long amount);
+    Wallet payOrderPayment(Order order, User user);
+}

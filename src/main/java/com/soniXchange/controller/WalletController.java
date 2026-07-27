@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.soniXchange.model.Order;
 import com.soniXchange.model.User;
 import com.soniXchange.model.Wallet;
 import com.soniXchange.model.WalletTransaction;
+import com.soniXchange.service.OrderService;
 import com.soniXchange.service.UserService;
 import com.soniXchange.service.WalletService;
 
@@ -26,6 +28,9 @@ public class WalletController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/api/wallet")
     public ResponseEntity<Wallet> getUserWallet(@RequestHeader("Authorization") String jwt) throws Exception{

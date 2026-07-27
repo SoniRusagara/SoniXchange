@@ -1,7 +1,14 @@
 package com.soniXchange.model;
 
+import java.time.LocalDateTime;
+
+import com.soniXchange.domain.WithdrawalStatus;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
@@ -10,6 +17,13 @@ public class Withdrawal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
+
+    private WithdrawalStatus status;
+
+    @ManyToOne
+    private Long amount;
+
+    private LocalDateTime date = LocalDateTime.now();
     
 }

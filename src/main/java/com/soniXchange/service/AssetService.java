@@ -20,4 +20,6 @@ public interface AssetService {
 
     Asset findAssetByUserIdAndCoinId(Long userId, String coinId);
 
-    void 
+    void deleteAsset(Long assetId);
+    
+}

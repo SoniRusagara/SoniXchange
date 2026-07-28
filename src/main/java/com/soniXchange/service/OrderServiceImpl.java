@@ -131,4 +131,36 @@ public class OrderServiceImpl implements OrderService{
                 order.setOrderType(OrderType.SELL);
                 Order savedOrder = orderRepository.save(order);
     
-                wallet
+                walletService.payOrderPayment(order, user);
+
+                Asset updatedAsset = assetService.updateAsset(
+                    assetToSell.getId(), -quantity
+                );
+    
+
+                if(updatedAsset.getQuantity()*coin.getCurrentPrice() <= 1){
+                    assetService.deleteAsset(updatedAsset.getId());
+                }
+    
+                return savedOrder;
+            }
+            throw new Exception("Insufficient quantity to sell");
+
+        }
+        
+        throw new Exception("Asset not found");
+    }
+
+    @Override
+    @Transactional
+    public Order processOrder(Coin coin, double quantity, OrderType orderType, User user) throws Exception{
+        if(orderType.equals(OrderType.BUY)){
+            return buyAsset(coin, quantity, user);
+        } 
+        else if(orderType.equals(OrderType.SELL)){
+            return sellAsset(coin, quantity, user);
+        }
+        throw new Exception("Invalid Order Type");
+    }
+    
+}

@@ -15,4 +15,6 @@ public interface WithdrawalService {
 
     List<Withdrawal> getUsersWithdrawalHistory(User user);
 
-    List<Withdrawal> getAllWithdrawalR
+    List<Withdrawal> getAllWithdrawalRequests();
+    
+}

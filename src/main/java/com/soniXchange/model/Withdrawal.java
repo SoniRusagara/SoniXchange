@@ -27,4 +27,6 @@ public class Withdrawal {
     @ManyToOne
     private User user;
 
-    private LocalDateT
+    private LocalDateTime date = LocalDateTime.now();
+    
+}

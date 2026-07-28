@@ -58,5 +58,4 @@ public class WatchlistController {
         Coin addedCoin = watchlistService.addItemToWatchlist(coin, user);
         return ResponseEntity.ok(addedCoin);
     }
-
 }

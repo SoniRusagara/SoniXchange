@@ -9,12 +9,10 @@ import lombok.With;
 
 public interface WithdrawalService {
 
-    Withdrawal reuestWithdrawal(Long amount, User user);
+    Withdrawal requestWithdrawal(Long amount, User user);
 
     Withdrawal proceeWithwithdrawal(Long withdrawalId, boolean accept) throws Exception;
 
     List<Withdrawal> getUsersWithdrawalHistory(User user);
 
-    List<Withdrawal> getAllWithdrawalRequests();
-    
-}
+    List<Withdrawal> getAllWithdrawalR

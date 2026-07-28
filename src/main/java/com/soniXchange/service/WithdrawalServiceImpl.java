@@ -39,21 +39,4 @@ public class WithdrawalServiceImpl implements WithdrawalService{
         withdrawal1.setDate(LocalDateTime.now());
 
         if(accept){
-            withdrawal1.setStatus(WithdrawalStatus.SUCCESS);
-        } else {
-            withdrawal1.setStatus(WithdrawalStatus.DECLINE);
-        }
-        return withdrawalRepository.save(withdrawal1);
-    }
-
-    @Override
-    public List<Withdrawal> getUsersWithdrawalHistory(User user) {
-        return withdrawalRepository.findByUserId(user.getId());
-    }
-
-    @Override
-    public List<Withdrawal> getAllWithdrawalRequests() {
-        return withdrawalRepository.findAll();
-    }
-    
-}
+            

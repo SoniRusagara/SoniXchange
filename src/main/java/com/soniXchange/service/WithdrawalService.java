@@ -11,7 +11,7 @@ public interface WithdrawalService {
 
     Withdrawal reuestWithdrawal(Long amount, User user);
 
-    Withdrawal proceeWithwithdrawal(Long withdrawalId, boolean accept);
+    Withdrawal proceeWithwithdrawal(Long withdrawalId, boolean accept) throws Exception;
 
     List<Withdrawal> getUsersWithdrawalHistory(User user);
 

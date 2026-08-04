@@ -1,5 +1,6 @@
 package com.soniXchange.service;
 
+import com.razorpay.RazorpayException;
 import com.soniXchange.domain.PaymentMethod;
 import com.soniXchange.model.PaymentOrder;
 import com.soniXchange.model.User;
@@ -13,9 +14,9 @@ public interface PaymentService {
 
     Boolean proceedPaymentOrder(PaymentOrder paymentOrder, String paymentId) throws Exception;
 
-    PaymentResponse createRazorpayPaymentLink(User user, Long amount);
+    PaymentResponse createRazorpayPaymentLink(User user, Long amount) throws RazorpayException;
 
     // For international transactions 
-    PaymentResponse createStripePaymentLink(User user, Long amount, Long orderId);
+    PaymentResponse createStripePaymentLink(User user, Long amount, Long orderId) throws Exception;
 
 }
